@@ -1,0 +1,38 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  /* IMPOSTAZIONI IMMAGINE BACKGORUND */
+  background-image: url(assets/bg.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  background-position-x: center;
+  background-position-y: center;
+
+  color: white;
+  width: 100vw;
+}
+
+header {
+  border: 1px solid white;
+}
+
+header img {
+  width: 20%;
+  height: 20%;
+}
+
+#first-container {
+  border: 1px solid white;
+  width: 75%;
+  margin: auto;
+}
+
+#checkbox-container {
+  display: flex;
+  flex-direction: row;
+}
