@@ -25,6 +25,9 @@ header img {
   width: 20%;
   height: 20%;
 }
+h2 {
+  font-family: outfit;
+}
 
 #first-container {
   border: 1px solid white;
@@ -32,7 +35,13 @@ header img {
   margin: auto;
 }
 
+#promessa {
+  display: flex;
+  align-items: center;
+}
 #checkbox-container {
   display: flex;
   flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }
