@@ -19,12 +19,19 @@
   
   header {
     border: 1px solid white;
+    display: flex;
+    justify-content: space-between;
   }
   
   header img {
     width: 20%;
     height: 20%;
   }
+
+  .timer {
+    margin-right: 150px;
+  }
+
   h2 {
     font-family: outfit;
   }
@@ -33,13 +40,14 @@
     border: 1px solid white;
     width: 75%;
     margin: auto;
-    display: none; /*PER VEDERE LA PRIMA PARTE DEVI TOGLIERE QUESTO DISPLAY NONE*/
+     /*PER VEDERE LA PRIMA PARTE DEVI TOGLIERE QUESTO DISPLAY NONE*/
   }
   
   #promessa {
     display: flex;
     align-items: center;
   }
+
   #checkbox-container {
     display: flex;
     flex-direction: row;
@@ -47,10 +55,45 @@
     justify-content: space-between;
   }
 
+  .checkB {
+    appearance: none;
+    border: 2px solid white;
+    background-color: transparent;
+    width: 18px;
+    height: 18px;
+    text-align: center;
+  }
+
+  .checkB:checked {
+    content: '\2713';
+    color: white;
+  }
+
+  .checkB {
+    cursor: pointer;
+  }
+
+  .checkB:checked:before {
+    content: '\2713';
+    font-size: 15px;
+    line-height: 15px;
+    color: white;
+  }
+
+  .bordo-rosso {
+    border: 2px solid red;
+    background-color: transparent;
+    height: 18px;
+    width: 18px;
+  }
+
   /*seconda parte - sezione domande*/
 
-  .second-container {
-    /*display:none*/
+  #nascondi {
+    display: none;
+  }
+
+  #second-container {
     display: flex;
     flex-direction: column;
     height: 500px;
@@ -92,7 +135,7 @@
   }
 
   #conteggioDomande {
-    /*display: none;*/
+    display: none;
     position: absolute;
     display: flex;
     justify-content: center;

@@ -13,7 +13,7 @@
 
   <header>
     <img src="assets/epicode_logo.png" alt="Epicode Logo">
-    <!-- <div></div>   DIV PER IL TIMER   -->
+    <div id="timer" class="timer">60</div>
   </header>
 
   <div id="first-container">
@@ -36,8 +36,8 @@
 
       <div id="checkbox-container">
         <div id="promessa">
-          <input type="checkbox">
-          <p>I promise to answer myself without help from anyone</p>
+          <input type="checkbox" id="checkBoxx" class="checkB">
+          <p> I promise to answer myself without help from anyone</p>
         </div>
         <div>
           <button id="proceed">PROCEED</button>
@@ -46,7 +46,8 @@
 
     </main>
   </div>
-  <div class="second-container"> <!--creo la parte delle domande :D da mettere in display none se volete lavorare sulla pagina di introduzione-->
+  <div id="nascondi">
+  <div id="second-container"> <!--creo la parte delle domande :D da mettere in display none se volete lavorare sulla pagina di introduzione-->
     <div id="question">blabla</div>
     <div id="answers">
         <button>ciao</button>
@@ -56,7 +57,8 @@
     </div>
   </div>
   <div id="conteggioDomande">/10</div> <!--anche questo div è da mettere in display none, ve lo lascio commentato nel css :D <3 -->
-
+</div>
+<script src="script.js"></script>
 </body>
 
 </html>
