@@ -8,8 +8,8 @@
   <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -20,20 +20,21 @@
   </header>
 
   <div id="container-generale">
-  
+
     <div id="first-container">
       <main>
         <div class="title">
           <h1>Welcome to</h1>
           <h2>your exam</h2>
         </div>
-  
+
         <h3>Instructions</h3>
         <p class="instructions">
-          We don't expect most engineers to know the answers to all these questions, so don't worry if you're unsure of a
+          We don't expect most engineers to know the answers to all these questions, so don't worry if you're unsure of
+          a
           few of them.
         </p>
-  
+
         <div class="details">
           <ul>
             <li>Each question is timed and can only be answered onse.</li>
@@ -41,33 +42,35 @@
             <li>This exam will take approx. 0-5 minutes.</li>
           </ul>
         </div>
-  
+
         <div id="checkbox-container">
 
           <div id="promessa">
             <input type="checkbox" id="checkBoxx" class="checkB">
             <p> I promise to answer myself without help from anyone</p>
           </div>
-          
+
           <div>
             <button id="proceed">PROCEED</button>
           </div>
 
         </div>
-  
+
       </main>
     </div>
     <div id="nascondi">
-      <div id="second-container"> <!--creo la parte delle domande :D da mettere in display none se volete lavorare sulla pagina di introduzione-->
-        <div id="question">blabla</div>
+      <div id="second-container">
+        <!--creo la parte delle domande :D da mettere in display none se volete lavorare sulla pagina di introduzione-->
+        <div id="question-container"></div>
         <div id="answers">
-          <button>ciao</button>
-          <button>ciao</button>
-          <button>ciao</button>
-          <button>ciao</button>
+          <button class="tastoRisposta">ciao</button>
+          <button class="tastoRisposta">ciao</button>
+          <button class="tastoRisposta">ciao</button>
+          <button class="tastoRisposta">ciao</button>
         </div>
       </div>
-      <div id="conteggioDomande">/10</div> <!--anche questo div è da mettere in display none, ve lo lascio commentato nel css :D <3 -->
+      <div id="conteggioDomande">/10</div>
+      <!--anche questo div è da mettere in display none, ve lo lascio commentato nel css :D <3 -->
     </div>
   </div>
   <script src="script.js"></script>
