@@ -1,150 +1,232 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
   
-  body {
-    /* IMPOSTAZIONI IMMAGINE BACKGORUND */
-    background-image: url('./assets/bg.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
-    background-position-x: center;
-    background-position-y: center;
+body {
+  /* IMPOSTAZIONI IMMAGINE BACKGORUND */
+  background-image: url('./assets/bg.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  background-position-x: center;
+  background-position-y: center;
   
-    color: white;
-    width: 100vw;
-  }
+  color: white;
+  width: 100vw;
+  height: 100vh;
+  font-size: 22px;
+  font-family: Arial, Helvetica, sans-serif;
+  overflow: hidden;
+}
+
+header,
+.title {
+  padding: 35px 0;
+}
   
-  header {
-    border: 1px solid white;
-    display: flex;
-    justify-content: space-between;
-  }
+header {
+  display: flex;
+  justify-content: space-between;
+}
   
-  header img {
-    width: 20%;
-    height: 20%;
-  }
+header img {
+  width: 15%;
+}
 
-  .timer {
-    margin-right: 150px;
-  }
+.timer {
+  margin-right: 150px;
+}
 
-  h2 {
-    font-family: outfit;
-  }
+.title {
+  font-size: 50px;
+}
+
+h1,
+h2 {
+  font-family: outfit;
+}
+
+h1 {
+  font-weight: normal;
+}
+
+h2 {
+  font-size: 85px;
+}
+
+h3 {
+  color: #d20094;
+  font-family: inter;
+  font-size: 25px;
+  padding-bottom: 10px;
+}
+
+header,
+#container-generale {
+  width: 75%;
+  margin: auto;
+}
+
+#container-generale {
+  height: 88%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
   
-  #first-container {
-    border: 1px solid white;
-    width: 75%;
-    margin: auto;
-     /*PER VEDERE LA PRIMA PARTE DEVI TOGLIERE QUESTO DISPLAY NONE*/
+#first-container {
+  width: 100%;
+  height: 100%;
+  /*PER VEDERE LA PRIMA PARTE DEVI TOGLIERE QUESTO DISPLAY NONE*/
   }
+
+main {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.instructions {
+  width: 55%;
+  word-spacing: 5px;
+  padding-bottom: 50px;
+}
+
+.details {
+  padding-left: 25px;
+}
+
+ul li {
+  padding: 5px 0;
+}
   
-  #promessa {
-    display: flex;
-    align-items: center;
-  }
+#promessa {
+  display: flex;
+  align-items: center;
+}
 
-  #checkbox-container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-  }
+#promessa p {
+  padding-left: 15px;
+}
 
-  .checkB {
-    appearance: none;
-    border: 2px solid white;
-    background-color: transparent;
-    width: 18px;
-    height: 18px;
-    text-align: center;
-  }
+#checkbox-container {
+  padding: 150px 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
 
-  .checkB:checked {
-    content: '\2713';
-    color: white;
-  }
+.checkB {
+  appearance: none;
+  border: 2px solid white;
+  background-color: transparent;
+  width: 18px;
+  height: 18px;
+  text-align: center;
+}
 
-  .checkB {
-    cursor: pointer;
-  }
+.checkB:checked {
+  content: '\2713';
+  color: white;
+}
 
-  .checkB:checked:before {
-    content: '\2713';
-    font-size: 15px;
-    line-height: 15px;
-    color: white;
-  }
+.checkB {
+  cursor: pointer;
+}
 
-  .bordo-rosso {
-    border: 2px solid red;
-    background-color: transparent;
-    height: 18px;
-    width: 18px;
-  }
+.checkB:checked:before {
+  content: '\2713';
+  font-size: 15px;
+  line-height: 15px;
+  color: white;
+}
 
-  /*seconda parte - sezione domande*/
+.bordo-rosso {
+  border: 2px solid red;
+  background-color: transparent;
+  height: 18px;
+  width: 18px;
+}
 
-  #nascondi {
-    display: none;
-  }
+#proceed {
+  width: 250px;
+  height: 60px;
+  font-family: inter;
+  font-size: 25px;
+  font-weight: bold;
+  background-color: #00ffff; 
+}
 
-  #second-container {
-    display: flex;
-    flex-direction: column;
-    height: 500px;
-    width: 800px;
-    border: 2px solid white;
-    justify-content: space-around;
-    align-items: center;
-    margin: auto;
-    margin-top: 80px;
-  }
+#proceed:hover {
+  -webkit-box-shadow:0px 0px 25px 5px rgba(0,255,255,0.5);
+  -moz-box-shadow: 0px 0px 25px 5px rgba(0,255,255,0.5);
+  box-shadow: 0px 0px 25px 5px rgba(0,255,255,0.5);   
+  transition: 0.3s;
+}
 
-  #answers {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    flex-wrap: wrap;
-    width: 800px;
-    height: 150px;
-    border: 1px solid white;
-  }
+/*seconda parte - sezione domande*/
 
-  #question {
-    margin-top: 50px;
-  }
+#nascondi {
+  display: none;
+}
 
-  #answers button {
-    width: 340px;
-    height: 55px;
-    color: white;
-    border-radius: 27px;
-    background-color: rgb(128, 128, 128, 0.2);
-    box-shadow: 0px -3px 6px rgb(254, 254, 254, 3.5);
-    border: none;
-  }
+#second-container {
+  display: flex;
+  flex-direction: column;
+  height: 500px;
+  width: 800px;
+  border: 2px solid white;
+  justify-content: space-around;
+  align-items: center;
+  margin: auto;
+  margin-top: 80px;
+}
 
-  #answers button:hover {
-    background-color: #D20094;
-    cursor: pointer;
-  }
+#answers {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 800px;
+  height: 150px;
+  border: 1px solid white;
+}
 
-  #conteggioDomande {
-    display: none;
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 30px;
-    width: 200px;
-    left: 50%;
-    border: 1px solid white;
-    transform: translateX(-50%);
-    margin-top: 20px;
-    color: #D20094;
-  }
+#question {
+  margin-top: 50px;
+}
+
+#answers button {
+  width: 340px;
+  height: 55px;
+  color: white;
+  border-radius: 27px;
+  background-color: rgb(128, 128, 128, 0.2);
+  box-shadow: 0px -3px 6px rgb(254, 254, 254, 3.5);
+  border: none;
+}
+
+#answers button:hover {
+  background-color: #D20094;
+  cursor: pointer;
+}
+
+#conteggioDomande {
+  display: none;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  width: 200px;
+  left: 50%;
+  border: 1px solid white;
+  transform: translateX(-50%);
+  margin-top: 20px;
+  color: #D20094;
+}
