@@ -138,24 +138,46 @@ const domande = document.getElementById("question-container")
 const risposte = document.getElementById("answers")
 const conteggioDomande = document.getElementById("conteggioDomande")
 
+
 function posizionamentoDomande() {
-  let arrayDomande = []
-  for (let i = 0; i < questions.length; i++) {
-    let domandaCorrente = questions[i].question
+  let indiceDomanda = 0;
 
-    arrayDomande.push(domandaCorrente)
-    domande.innerHTML = domandaCorrente
+  function mostraDomandaSuccessiva() {
+    if (indiceDomanda < questions.length) {
+      let domandaCorrente = questions[indiceDomanda].question;
+      domande.innerHTML = domandaCorrente;
 
-    const pulsantiRisposta = document.getElementsByClassName("tastoRisposta")
-    let cliccato = false
-    pulsantiRisposta.addEventListener("click", function () {
-      if (!cliccato) {
-        domandaCorrente += 1
-      }
-    })
+      const risposteDiv = document.getElementById("answers");
+      risposteDiv.innerHTML = ""; // Pulisce le risposte precedenti
 
+      const risposte = [questions[indiceDomanda].correct_answer, ...questions[indiceDomanda].incorrect_answers];
+      shuffleArray(risposte); // Mischia le risposte
 
+      risposte.forEach((risposta) => {
+        const button = document.createElement("button");
+        button.className = "tastoRisposta";
+        button.innerHTML = risposta;
+        button.addEventListener("click", function () {
+          mostraDomandaSuccessiva();
+        });
+        risposteDiv.appendChild(button);
+      });
+
+      indiceDomanda++;
+      conteggioDomande.innerHTML = "QUESTION " + indiceDomanda
+    } else {
+      domande.innerHTML = "Fine delle domande";
+    }
   }
 
+  mostraDomandaSuccessiva();
 }
-posizionamentoDomande()
+
+posizionamentoDomande();
+
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}

@@ -227,5 +227,10 @@ ul li {
   border: 1px solid white;
   transform: translateX(-50%);
   margin-top: 20px;
-  color: #d20094;
+}
+#conteggioDomande::after {
+  content: "/10"; /* Aggiunge il testo "/10" come contenuto aggiuntivo */
+}
+#conteggioDomande::after {
+  color: #d20094; /* Imposta il colore del testo "/10" su rosa */
 }
