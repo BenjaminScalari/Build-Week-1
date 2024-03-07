@@ -149,6 +149,11 @@ function posizionamentoDomande() {
   let quizTerminato = false
 
   function mostraDomandaSuccessiva() {
+    //test carmen timer
+    tempo = 60;
+    clearInterval(timerIntervallo);
+    timerIntervallo = setInterval(tempoRimanente, 1000);
+    //fino a qui
     if (indiceDomanda < questions.length) {
       let domandaCorrente = questions[indiceDomanda];
       domande.innerHTML = domandaCorrente.question;
@@ -180,12 +185,14 @@ function posizionamentoDomande() {
           if (indiceDomanda === questions.length - 1) {//se arriviamo all'ultima domanda
             console.log("Ultima domanda raggiunta. Risposte giuste: " + risposteGiuste + ", Risposte sbagliate: " + risposteSbagliate);
             quizTerminato = true;
+            mostraRisultato();//testcarmen
             clearInterval(timerIntervallo); // Ferma il timer
           } else {
 
             indiceDomanda++
 
             mostraDomandaSuccessiva();
+            
           }
 
 
@@ -195,6 +202,7 @@ function posizionamentoDomande() {
     }
   }
   mostraDomandaSuccessiva();
+  
 
   //sicuramente da cambiare 
   setInterval(function () {
@@ -215,4 +223,16 @@ function shuffleArray(array) {
     [array[i], array[j]] = [array[j], array[i]];
   }
 }
+//test carmen per test superato o fallito
+function mostraRisultato() {
+  let risultato = document.getElementById('risultato');
+  if (risposteGiuste > 6) {
+    console.log("Test superato!"+ risultato);
+  } else {
+    console.log("Test fallito!"+ risultato);
+  }
+}
+
+
+posizionamentoDomande();
 
