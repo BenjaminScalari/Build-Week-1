@@ -136,8 +136,10 @@ let timerIntervallo = null; // Variabile per memorizzare l'intervallo del timer
 let indiceDomanda = 0; // Indice della domanda corrente
 let risposteSbagliate = 0;
 let risposteGiuste = 0;
+let risposteSaltate = 0;
 
   // Funzione per mostrare la domanda successiva
+  
   function mostraDomandaSuccessiva() {
     if (indiceDomanda < questions.length) {
         let domandaCorrente = questions[indiceDomanda];
@@ -164,17 +166,20 @@ let risposteGiuste = 0;
         });
 
         // Avvia il timer per la domanda
-        tempo = 60; // Ripristina il tempo a 60 secondi
+        
+        tempo = 11; // Ripristina il tempo a 60 secondi
         clearInterval(timerIntervallo); // Ferma il timer 
         timerIntervallo = setInterval(function () { // Avvia un nuovo timer
             tempo--;
             if (tempo >= 0) {
                 timer.textContent = tempo;
-            } else {                           //IMPORTANTE
+            } else {         //IMPORTANTE
+              console.log(risposteSaltate);
                 console.log('Tempo scaduto'); //bisogna trovare come far in modo che nei risultati esca fuori che non è stata data alcuna risposta.
                 clearInterval(timerIntervallo);
                 risposteSbagliate++; // Considera la risposta come sbagliata
                 indiceDomanda++; // Passa alla prossima domanda
+                risposteSaltate++
                 mostraDomandaSuccessiva(); // Mostra la prossima domanda
             }
         }, 1000);
@@ -210,6 +215,8 @@ function gestisciRisposta(rispostaData, rispostaCorretta) {
   if (rispostaData === rispostaCorretta) {
       risposteGiuste++;
       console.log("Risposta corretta");
+  } else if (rispostaData === '') {
+    console.log("Tempo esaurito");
   } else {
       risposteSbagliate++;
       console.log("Risposta errata");
@@ -225,7 +232,7 @@ function shuffleArray(array) {
   }
 }
 
-//test carmen per test superato o fallito    
+//test carmen (grandissima) per test superato o fallito    
 function mostraRisultato() {
   let risultato = document.getElementById('risultato');
   let listaRisultati = document.getElementById('listaRisultati');
@@ -237,22 +244,24 @@ function mostraRisultato() {
     let icona = document.createElement('i');
   icona.classList.add('fas');
   if (risposta.rispostaData === risposta.rispostaCorretta) {
-    icona.classList.add('fa-check'); // aggiungo l'icona X nel caso fosse sbagliato
+    icona.classList.add('fa-check'); // aggiungo l'icona V nel caso fosse sbagliato
   } else {
-    icona.classList.add('fa-times'); // Aggiungo l'icona V nel caso fosse una domanda azzeccata :D
-  }
+    icona.classList.add('fa-times'); // Aggiungo l'icona X nel caso fosse una domanda azzeccata :D
+  } 
     listItem.textContent = 'Domanda: ' + risposta.domanda + ', Risposta data: ' + risposta.rispostaData + ', Risposta corretta: ' + risposta.rispostaCorretta;
     listaRisultati.appendChild(listItem);
     listItem.appendChild(icona); // Aggiungi l'icona alla risposta
   });
   
-  if (risposteGiuste > 6) {
-    risultato.textContent = "Test superato! "+ risposteGiuste + ' risposte giuste';
+  if (risposteGiuste >= 6) {
+    risultato.textContent = "Test superato! "+ risposteGiuste + ' risposte giuste' + 'Risposte Saltate: ' + risposteSaltate;
      //modifico il 'risultato' con 'risposte giuste o sbagliate: Nouha
   } else {
-    risultato.textContent = "Test fallito! "+ risposteSbagliate + ' risposte errate';
+    risultato.textContent = "Test fallito! "+ risposteSbagliate + ' risposte errate' + ' risposte saltate: ' + risposteSaltate;
     console.log("Test fallito!"+ risposteSbagliate + ' risposte errate');
   }
+
+  console.log(risposteGiuste + risposteSbagliate + risposteSaltate)
 
 }
 
