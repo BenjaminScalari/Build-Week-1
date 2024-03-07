@@ -98,141 +98,162 @@ const questions = [
   },
 ];
 
-//funzione timer che dovrà essere aggiornata
-let tempo = 60;
-let timer = document.getElementById('timer');
-let timerIntervallo = null;
-
-function tempoRimanente() {
-  if (tempo <= 0) {
-    console.log('tempo scaduto');
-    clearInterval(timerIntervallo);
-    mostraDomandaSuccessiva();
-    return;
-  }
-  tempo--;
-  timer.textContent = tempo;
-};
 
 
 
 
-//funzione per il tasto proceed
-let proceed = document.getElementById('proceed')
 
+
+// Inizio del codice
+const domande = document.getElementById("question-container");
+const conteggioDomande = document.getElementById("conteggioDomande");
+const timer = document.getElementById('timer');
+const secondContainer = document.getElementById('second-container');
+
+// Funzione per il tasto proceed
+let proceed = document.getElementById('proceed');
 proceed.addEventListener('click', function () {
-  let checkBox = document.getElementById('checkBoxx');
-  if (checkBox.checked) {
-    let nascondi = document.getElementById('nascondi');
-    nascondi.style.display = 'block';
-    let firstContainer = document.getElementById('first-container');
-    firstContainer.style.display = 'none';
-  } else {
-    document.getElementById('checkBoxx').classList.remove('checkBoxx')
-    document.getElementById('checkBoxx').classList.add('bordo-rosso')
-    alert('Per proseguire devi promettere di non barare!')
-  }
+    let checkBox = document.getElementById('checkBoxx');
+    if (checkBox.checked) {
+        let nascondi = document.getElementById('nascondi');
+        nascondi.style.display = 'block';
+        let firstContainer = document.getElementById('first-container');
+        firstContainer.style.display = 'none';
+        indiceDomanda = 0; // Reimposta l'indice della domanda
+        mostraDomandaSuccessiva(); // Mostra la prima domanda
+        timer.style.display = 'block'
+    } else {
+        document.getElementById('checkBoxx').classList.remove('checkBoxx');
+        document.getElementById('checkBoxx').classList.add('bordo-rosso');
+        alert('Per proseguire devi promettere di non barare!');
+    }
+});
 
-})
-
-//funzione domande
-
-const domande = document.getElementById("question-container")
-const risposte = document.getElementById("answers")
-const conteggioDomande = document.getElementById("conteggioDomande")
-
+//funzione domande e risposte
+let quizTerminato = false
+let tempo = 60; // Tempo iniziale
+let timerIntervallo = null; // Variabile per memorizzare l'intervallo del timer
+let indiceDomanda = 0; // Indice della domanda corrente
 let risposteSbagliate = 0;
 let risposteGiuste = 0;
 
-function posizionamentoDomande() {
-  let indiceDomanda = 0;
-  let quizTerminato = false
-
+  // Funzione per mostrare la domanda successiva
   function mostraDomandaSuccessiva() {
-    //test carmen timer
-    tempo = 60;
-    clearInterval(timerIntervallo);
-    timerIntervallo = setInterval(tempoRimanente, 1000);
-    //fino a qui
     if (indiceDomanda < questions.length) {
-      let domandaCorrente = questions[indiceDomanda];
-      domande.innerHTML = domandaCorrente.question;
-      conteggioDomande.innerHTML = 'QUESTION ' + (indiceDomanda + 1);
+        let domandaCorrente = questions[indiceDomanda];
+        domande.innerHTML = domandaCorrente.question;
+        conteggioDomande.innerHTML = 'QUESTION ' + (indiceDomanda + 1);
 
-      const risposteDiv = document.getElementById("answers");
-      risposteDiv.innerHTML = ""; // Pulisce le risposte precedenti
+        const risposteDiv = document.getElementById("answers");
+        risposteDiv.innerHTML = ""; // Pulisce le risposte precedenti
 
-      const risposte = [questions[indiceDomanda].correct_answer, ...questions[indiceDomanda].incorrect_answers];
-      shuffleArray(risposte); // Mischia le risposte
+        const risposte = [questions[indiceDomanda].correct_answer, ...questions[indiceDomanda].incorrect_answers];
+        shuffleArray(risposte); // Mischia le risposte
 
-      risposte.forEach((risposta) => {
-        const button = document.createElement("button");
-        button.className = "tastoRisposta";
-        button.innerHTML = risposta;
-        button.addEventListener("click", function () {
-          if (quizTerminato) {
-            console.log("Il quiz è terminato")
-            return
-          }
-
-          if (risposta === domandaCorrente.correct_answer) {
-            risposteGiuste++;
-            console.log("Risposte Giuste: " + risposteGiuste);
-          } else {
-            risposteSbagliate++;
-            console.log("Risposte Sbagliate: " + risposteSbagliate);
-          }
-          if (indiceDomanda === questions.length - 1) {//se arriviamo all'ultima domanda
-            console.log("Ultima domanda raggiunta. Risposte giuste: " + risposteGiuste + ", Risposte sbagliate: " + risposteSbagliate);
-            quizTerminato = true;
-            mostraRisultato();//testcarmen
-            clearInterval(timerIntervallo); // Ferma il timer
-          } else {
-
-            indiceDomanda++
-
-            mostraDomandaSuccessiva();
-            
-          }
-
-
+        risposte.forEach((risposta) => {
+            const button = document.createElement("button");
+            button.className = "tastoRisposta";
+            button.innerHTML = risposta;
+            button.addEventListener("click", function () {
+                clearInterval(timerIntervallo); // Ferma il timer quando si risponde
+                gestisciRisposta(risposta, domandaCorrente.correct_answer); // Controlla la risposta data
+                indiceDomanda++; // Passa alla prossima domanda
+                mostraDomandaSuccessiva(); // Mostra la prossima domanda
+            });
+            risposteDiv.appendChild(button);
         });
-        risposteDiv.appendChild(button);
-      });
-    }
-  }
-  mostraDomandaSuccessiva();
-  
 
-  //sicuramente da cambiare 
-  setInterval(function () {
-    mostraDomandaSuccessiva();
-    tempo = 60; // Resetta il timer
-    clearInterval(timerIntervallo);
-    timerIntervallo = setInterval(tempoRimanente, 1000); // Riavvia il timer
-  }, 45000);
+        // Avvia il timer per la domanda
+        tempo = 60; // Ripristina il tempo a 60 secondi
+        clearInterval(timerIntervallo); // Ferma il timer 
+        timerIntervallo = setInterval(function () { // Avvia un nuovo timer
+            tempo--;
+            if (tempo >= 0) {
+                timer.textContent = tempo;
+            } else {                           //IMPORTANTE
+                console.log('Tempo scaduto'); //bisogna trovare come far in modo che nei risultati esca fuori che non è stata data alcuna risposta.
+                clearInterval(timerIntervallo);
+                risposteSbagliate++; // Considera la risposta come sbagliata
+                indiceDomanda++; // Passa alla prossima domanda
+                mostraDomandaSuccessiva(); // Mostra la prossima domanda
+            }
+        }, 1000);
+    } else {
+        console.log("Quiz completato");
+        clearInterval(timerIntervallo); // Ferma il timer alla fine del quiz
+        let vediRisultatoBtn = document.getElementById('vediRisultato')
+        let btnRisultato = document.createElement('button')
+        btnRisultato.id = 'btnRisultato'
+        vediRisultatoBtn.appendChild(btnRisultato)
+        btnRisultato.textContent = 'Test terminato: clicca per vedere il risultato!'
+        conteggioDomande.style.display = 'none';
+        secondContainer.style.display = 'none';
+        timer.style.display = 'none';
+        btnRisultato.addEventListener('click', function() {
+          mostraRisultato()
+          btnRisultato.style.display = 'none'
+        })
+    }
 }
 
-posizionamentoDomande();
+let risposteUtente = [];
+// Funzione per gestire la risposta data
+function gestisciRisposta(rispostaData, rispostaCorretta) {
+  let domandaCorrente = questions[indiceDomanda];
+    let rispostaUtente = {
+        domanda: domandaCorrente.question,
+        rispostaData: rispostaData,
+        rispostaCorretta: rispostaCorretta
+    };
+    risposteUtente.push(rispostaUtente); // Aggiunge la domanda e la risposta all'array
 
+  if (rispostaData === rispostaCorretta) {
+      risposteGiuste++;
+      console.log("Risposta corretta");
+  } else {
+      risposteSbagliate++;
+      console.log("Risposta errata");
+  }
+}
+  
 
-//funzione per randomizzare risposte
+//funzione per randomizzare risposte O MEGLIO ALGORITMO DI FISHER-YATES //BISOGNA NON FARGLI MESCOLARE I BOOLEAN
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [array[i], array[j]] = [array[j], array[i]];
   }
 }
-//test carmen per test superato o fallito
+
+//test carmen per test superato o fallito    
 function mostraRisultato() {
   let risultato = document.getElementById('risultato');
-  if (risposteGiuste > 6) {
-    console.log("Test superato!"+ risultato);
+  let listaRisultati = document.getElementById('listaRisultati');
+  let risultatoFinale = document.getElementById('risultatoFinale');
+  risultatoFinale.style.display = 'block'
+
+  risposteUtente.forEach((risposta) => {  // Nouha: faccio qualche modifica
+    let listItem = document.createElement('li');
+    let icona = document.createElement('i');
+  icona.classList.add('fas');
+  if (risposta.rispostaData === risposta.rispostaCorretta) {
+    icona.classList.add('fa-check'); // aggiungo l'icona X nel caso fosse sbagliato
   } else {
-    console.log("Test fallito!"+ risultato);
+    icona.classList.add('fa-times'); // Aggiungo l'icona V nel caso fosse una domanda azzeccata :D
   }
+    listItem.textContent = 'Domanda: ' + risposta.domanda + ', Risposta data: ' + risposta.rispostaData + ', Risposta corretta: ' + risposta.rispostaCorretta;
+    listaRisultati.appendChild(listItem);
+    listItem.appendChild(icona); // Aggiungi l'icona alla risposta
+  });
+  
+  if (risposteGiuste > 6) {
+    risultato.textContent = "Test superato! "+ risposteGiuste + ' risposte giuste';
+     //modifico il 'risultato' con 'risposte giuste o sbagliate: Nouha
+  } else {
+    risultato.textContent = "Test fallito! "+ risposteSbagliate + ' risposte errate';
+    console.log("Test fallito!"+ risposteSbagliate + ' risposte errate');
+  }
+
 }
 
-
-posizionamentoDomande();
 
