@@ -100,10 +100,6 @@ const questions = [
 
 
 
-
-
-
-
 // Inizio del codice
 const domande = document.getElementById("question-container");
 const conteggioDomande = document.getElementById("conteggioDomande");
@@ -113,20 +109,20 @@ const secondContainer = document.getElementById('second-container');
 // Funzione per il tasto proceed
 let proceed = document.getElementById('proceed');
 proceed.addEventListener('click', function () {
-    let checkBox = document.getElementById('checkBoxx');
-    if (checkBox.checked) {
-        let nascondi = document.getElementById('nascondi');
-        nascondi.style.display = 'block';
-        let firstContainer = document.getElementById('first-container');
-        firstContainer.style.display = 'none';
-        indiceDomanda = 0; // Reimposta l'indice della domanda
-        mostraDomandaSuccessiva(); // Mostra la prima domanda
-        timer.style.display = 'block'
-    } else {
-        document.getElementById('checkBoxx').classList.remove('checkBoxx');
-        document.getElementById('checkBoxx').classList.add('bordo-rosso');
-        alert('Per proseguire devi promettere di non barare!');
-    }
+  let checkBox = document.getElementById('checkBoxx');
+  if (checkBox.checked) {
+    let nascondi = document.getElementById('nascondi');
+    nascondi.style.display = 'block';
+    let firstContainer = document.getElementById('first-container');
+    firstContainer.style.display = 'none';
+    indiceDomanda = 0; // Reimposta l'indice della domanda
+    mostraDomandaSuccessiva(); // Mostra la prima domanda
+    timer.style.display = 'block'
+  } else {
+    document.getElementById('checkBoxx').classList.remove('checkBoxx');
+    document.getElementById('checkBoxx').classList.add('bordo-rosso');
+    alert('Per proseguire devi promettere di non barare!');
+  }
 });
 
 //funzione domande e risposte
@@ -138,64 +134,64 @@ let risposteSbagliate = 0;
 let risposteGiuste = 0;
 let tempoScaduto = false;
 
-  // Funzione per mostrare la domanda successiva
-  function mostraDomandaSuccessiva() {
-    if (indiceDomanda < questions.length) {
-        let domandaCorrente = questions[indiceDomanda];
-        domande.innerHTML = domandaCorrente.question;
-        conteggioDomande.innerHTML = 'QUESTION ' + (indiceDomanda + 1);
+// Funzione per mostrare la domanda successiva
+function mostraDomandaSuccessiva() {
+  if (indiceDomanda < questions.length) {
+    let domandaCorrente = questions[indiceDomanda];
+    domande.innerHTML = domandaCorrente.question;
+    conteggioDomande.innerHTML = 'QUESTION ' + (indiceDomanda + 1);
 
-        const risposteDiv = document.getElementById("answers");
-        risposteDiv.innerHTML = ""; // Pulisce le risposte precedenti
+    const risposteDiv = document.getElementById("answers");
+    risposteDiv.innerHTML = ""; // Pulisce le risposte precedenti
 
-        const risposte = [questions[indiceDomanda].correct_answer, ...questions[indiceDomanda].incorrect_answers];
-        shuffleArray(risposte); // Mischia le risposte
+    const risposte = [questions[indiceDomanda].correct_answer, ...questions[indiceDomanda].incorrect_answers];
+    shuffleArray(risposte); // Mischia le risposte
 
-        risposte.forEach((risposta) => {
-            const button = document.createElement("button");
-            button.className = "tastoRisposta";
-            button.innerHTML = risposta;
-            button.addEventListener("click", function () {
-                clearInterval(timerIntervallo); // Ferma il timer quando si risponde
-                gestisciRisposta(risposta, domandaCorrente.correct_answer); // Controlla la risposta data
-                indiceDomanda++; // Passa alla prossima domanda
-                mostraDomandaSuccessiva(); // Mostra la prossima domanda
-            });
-            risposteDiv.appendChild(button);
-        });
+    risposte.forEach((risposta) => {
+      const button = document.createElement("button");
+      button.className = "tastoRisposta";
+      button.innerHTML = risposta;
+      button.addEventListener("click", function () {
+        clearInterval(timerIntervallo); // Ferma il timer quando si risponde
+        gestisciRisposta(risposta, domandaCorrente.correct_answer); // Controlla la risposta data
+        indiceDomanda++; // Passa alla prossima domanda
+        mostraDomandaSuccessiva(); // Mostra la prossima domanda
+      });
+      risposteDiv.appendChild(button);
+    });
 
-        // Avvia il timer per la domanda
-        tempo = 10; // Ripristina il tempo a 60 secondi
-        clearInterval(timerIntervallo); // Ferma il timer 
-        timerIntervallo = setInterval(function () { // Avvia un nuovo timer
-            tempo--;
-            if (tempo >= 0) {
-                timer.textContent = tempo;
-            } else {                           //IMPORTANTE
-                console.log('Tempo scaduto'); //bisogna trovare come far in modo che nei risultati esca fuori che non è stata data alcuna risposta.
-                clearInterval(timerIntervallo);
-                risposteSbagliate++; // Considera la risposta come sbagliata
-                indiceDomanda++; // Passa alla prossima domanda
-                tempoScaduto = true;
-                mostraDomandaSuccessiva(); // Mostra la prossima domanda
-            }
-        }, 1000);
-    } else {
-        console.log("Quiz completato");
-        clearInterval(timerIntervallo); // Ferma il timer alla fine del quiz
-        let vediRisultatoBtn = document.getElementById('vediRisultato')
-        let btnRisultato = document.createElement('button')
-        btnRisultato.id = 'btnRisultato'
-        vediRisultatoBtn.appendChild(btnRisultato)
-        btnRisultato.textContent = 'Test terminato: clicca per vedere il risultato!'
-        conteggioDomande.style.display = 'none';
-        secondContainer.style.display = 'none';
-        timer.style.display = 'none';
-        btnRisultato.addEventListener('click', function() {
-          mostraRisultato()
-          btnRisultato.style.display = 'none'
-        })
-    }
+    // Avvia il timer per la domanda
+    tempo = 10; // Ripristina il tempo a 60 secondi
+    clearInterval(timerIntervallo); // Ferma il timer 
+    timerIntervallo = setInterval(function () { // Avvia un nuovo timer
+      tempo--;
+      if (tempo >= 0) {
+        timer.textContent = tempo;
+      } else {                           //IMPORTANTE
+        console.log('Tempo scaduto'); //bisogna trovare come far in modo che nei risultati esca fuori che non è stata data alcuna risposta.
+        clearInterval(timerIntervallo);
+        risposteSbagliate++; // Considera la risposta come sbagliata
+        indiceDomanda++; // Passa alla prossima domanda
+        tempoScaduto = true;
+        mostraDomandaSuccessiva(); // Mostra la prossima domanda
+      }
+    }, 1000);
+  } else {
+    console.log("Quiz completato");
+    clearInterval(timerIntervallo); // Ferma il timer alla fine del quiz
+    let vediRisultatoBtn = document.getElementById('vediRisultato')
+    let btnRisultato = document.createElement('button')
+    btnRisultato.id = 'btnRisultato'
+    vediRisultatoBtn.appendChild(btnRisultato)
+    btnRisultato.textContent = 'Test terminato: clicca per vedere il risultato!'
+    conteggioDomande.style.display = 'none';
+    secondContainer.style.display = 'none';
+    timer.style.display = 'none';
+    btnRisultato.addEventListener('click', function () {
+      mostraRisultato()
+      btnRisultato.style.display = 'none'
+    })
+  }
 }
 
 let risposteUtente = [];
@@ -203,28 +199,28 @@ console.log(risposteUtente);
 // Funzione per gestire la risposta data
 function gestisciRisposta(rispostaData, rispostaCorretta) {
   let domandaCorrente = questions[indiceDomanda];
-    let rispostaUtente = {
-        domanda: domandaCorrente.question,
-        rispostaData: rispostaData,
-        rispostaCorretta: rispostaCorretta,
-        rispostaSaltata: tempoScaduto,
-    };
-    risposteUtente.push(rispostaUtente); // Aggiunge la domanda e la risposta all'array
+  let rispostaUtente = {
+    domanda: domandaCorrente.question,
+    rispostaData: rispostaData,
+    rispostaCorretta: rispostaCorretta,
+    rispostaSaltata: tempoScaduto,
+  };
+  risposteUtente.push(rispostaUtente); // Aggiunge la domanda e la risposta all'array
 
-    if (!tempoScaduto) {
-      if (rispostaData === rispostaCorretta) {
-          risposteGiuste++;
-          console.log("Risposta corretta");
-      } else {
-          risposteSbagliate++;
-          console.log("Risposta errata");
-      }
+  if (!tempoScaduto) {
+    if (rispostaData === rispostaCorretta) {
+      risposteGiuste++;
+      console.log("Risposta corretta");
+    } else {
+      risposteSbagliate++;
+      console.log("Risposta errata");
+    }
   } else {
-      console.log("Risposta saltata");
+    console.log("Risposta saltata");
   }
 
 }
-  
+
 
 //funzione per randomizzare risposte O MEGLIO ALGORITMO DI FISHER-YATES //BISOGNA NON FARGLI MESCOLARE I BOOLEAN
 function shuffleArray(array) {
@@ -254,18 +250,18 @@ function mostraRisultato() {
 
   // Itera su tutte le domande
   questions.forEach((domanda) => {
-      let rispostaData = ''; // Inizializza la risposta data come vuota
-      let icona = ''; // Inizializza l'icona come vuota
+    let rispostaData = ''; // Inizializza la risposta data come vuota
+    let icona = ''; // Inizializza l'icona come vuota
 
-      // Cerca se l'utente ha fornito una risposta per questa domanda
-      risposteUtente.forEach((rispostaUtente) => {
-          if (rispostaUtente.domanda === domanda.question) {
-              rispostaData = rispostaUtente.rispostaData; // Aggiorna la risposta data se trovata
-          }
-      });
+    // Cerca se l'utente ha fornito una risposta per questa domanda
+    risposteUtente.forEach((rispostaUtente) => {
+      if (rispostaUtente.domanda === domanda.question) {
+        rispostaData = rispostaUtente.rispostaData; // Aggiorna la risposta data se trovata
+      }
+    });
 
-      // Aggiungi la riga della tabella per questa domanda
-      tabellaHTML += `
+    // Aggiungi la riga della tabella per questa domanda
+    tabellaHTML += `
           <tr>
               <td>${domanda.question}</td>
               <td>${domanda.correct_answer} ${icona}</td> <!-- Modifica qui -->
@@ -281,10 +277,10 @@ function mostraRisultato() {
 
   risultatoFinale.innerHTML = tabellaHTML;
 
-  if (risposteGiuste > 6) {
-      risultato.textContent = "Test superato! " + risposteGiuste + ' risposte giuste';
+  if (risposteGiuste >= 6) {
+    risultato.textContent = "Test superato! " + risposteGiuste + ' risposte giuste';
   } else {
-      risultato.textContent = "Test fallito! " + risposteSbagliate + ' risposte errate';
+    risultato.textContent = "Test fallito! " + risposteSbagliate + ' risposte errate';
   }
 }
 
