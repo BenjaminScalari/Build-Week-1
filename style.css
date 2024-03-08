@@ -256,16 +256,6 @@ ul li {
   transform: scale(1.1);
 }
 
-.fa-check {
-  color: green; /* Imposto il colore verde per le V :D */
-  margin-left: 20px;
-}
-
-.fa-times {
-  color: red; /* Impost0 il colore rosso per la X */
-  margin-left: 20px;
-}
-
 #risultatoFinale {
   display: none;
   width: 95%;
@@ -273,26 +263,39 @@ ul li {
   margin-bottom: 100px;
 }
 
-#risultatoFinale ol {
-  margin-left: 30px;
-  display: flex;
-  flex-direction: column;
+#risultatoFinale .fa-check {
+  color: green;
 }
 
-#risultatoFinale li {
+#risultatoFinale .fa-edit {
+  color: #3c0c36;
+}
+
+.risultati-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.risultati-table th, .risultati-table td {
+  border: 1px solid  #cab6e6;
+  padding: 10px;
+}
+
+.risultati-table th {
+  background-color: #7a106c;
+  color: white;
+  text-align: center;
+}
+
+.risultati-table td {
+  text-align: left;
+}
+
+#risultato {
+  display: none;
+  margin-left: 50%;
   padding: 15px;
-  margin: 15px
-}
-
-#risultatoFinale h4 {
-  margin-left: 55%;
-  padding: 15px;
-  transform: translate(-50%);
-  color: #d20094;
-}
-
-#risultatoFinale li:hover {
-  box-shadow: 0px 0px 25px 5px rgba(0, 255, 255, 0.5);
-  border-radius: 15px;
-  cursor: pointer;
+  transform: translateX(-50%);
+  color: #cab6e6;
+  margin-bottom: 30px;
 }

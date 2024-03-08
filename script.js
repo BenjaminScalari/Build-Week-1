@@ -99,32 +99,34 @@ const questions = [
 ];
 
 
+
+
+
+
+
 // Inizio del codice
 const domande = document.getElementById("question-container");
 const conteggioDomande = document.getElementById("conteggioDomande");
 const timer = document.getElementById('timer');
 const secondContainer = document.getElementById('second-container');
-const risposteDiv = document.getElementById("answers");
-const tabellaRisultati = document.getElementById('tabellaRisultati');
-
 
 // Funzione per il tasto proceed
 let proceed = document.getElementById('proceed');
 proceed.addEventListener('click', function () {
-  let checkBox = document.getElementById('checkBoxx');
-  if (checkBox.checked) {
-    let nascondi = document.getElementById('nascondi');
-    nascondi.style.display = 'block';
-    let firstContainer = document.getElementById('first-container');
-    firstContainer.style.display = 'none';
-    indiceDomanda = 0; // Reimposta l'indice della domanda
-    mostraDomandaSuccessiva(); // Mostra la prima domanda
-    timer.style.display = 'block'
-  } else {
-    document.getElementById('checkBoxx').classList.remove('checkBoxx');
-    document.getElementById('checkBoxx').classList.add('bordo-rosso');
-    alert('Per proseguire devi promettere di non barare!');
-  }
+    let checkBox = document.getElementById('checkBoxx');
+    if (checkBox.checked) {
+        let nascondi = document.getElementById('nascondi');
+        nascondi.style.display = 'block';
+        let firstContainer = document.getElementById('first-container');
+        firstContainer.style.display = 'none';
+        indiceDomanda = 0; // Reimposta l'indice della domanda
+        mostraDomandaSuccessiva(); // Mostra la prima domanda
+        timer.style.display = 'block'
+    } else {
+        document.getElementById('checkBoxx').classList.remove('checkBoxx');
+        document.getElementById('checkBoxx').classList.add('bordo-rosso');
+        alert('Per proseguire devi promettere di non barare!');
+    }
 });
 
 //funzione domande e risposte
@@ -134,104 +136,95 @@ let timerIntervallo = null; // Variabile per memorizzare l'intervallo del timer
 let indiceDomanda = 0; // Indice della domanda corrente
 let risposteSbagliate = 0;
 let risposteGiuste = 0;
-let risposteSaltate = 0;
-let risposteUtente = []
-const domandeSaltate = []
-// Funzione per mostrare la domanda successiva
+let tempoScaduto = false;
 
-function mostraDomandaSuccessiva() {
-  if (indiceDomanda < questions.length) {
-    let domandaCorrente = questions[indiceDomanda];
-    domande.innerHTML = domandaCorrente.question;
-    conteggioDomande.innerHTML = 'QUESTION ' + (indiceDomanda + 1);
+  // Funzione per mostrare la domanda successiva
+  function mostraDomandaSuccessiva() {
+    if (indiceDomanda < questions.length) {
+        let domandaCorrente = questions[indiceDomanda];
+        domande.innerHTML = domandaCorrente.question;
+        conteggioDomande.innerHTML = 'QUESTION ' + (indiceDomanda + 1);
 
-    risposteDiv.innerHTML = ""; // Pulisce le risposte precedenti
+        const risposteDiv = document.getElementById("answers");
+        risposteDiv.innerHTML = ""; // Pulisce le risposte precedenti
 
-    const risposte = [questions[indiceDomanda].correct_answer, ...questions[indiceDomanda].incorrect_answers];
-    shuffleArray(risposte); // Mischia le risposte
+        const risposte = [questions[indiceDomanda].correct_answer, ...questions[indiceDomanda].incorrect_answers];
+        shuffleArray(risposte); // Mischia le risposte
 
-    risposte.forEach((risposta) => {
-      const button = document.createElement("button");
-      button.className = "tastoRisposta";
-      button.innerHTML = risposta;
-      button.addEventListener("click", function () {
-        clearInterval(timerIntervallo); // Ferma il timer quando si risponde
-        gestisciRisposta(risposta, domandaCorrente.correct_answer); // Controlla la risposta data
-        indiceDomanda++; // Passa alla prossima domanda
-        mostraDomandaSuccessiva(); // Mostra la prossima domanda
-      });
-      risposteDiv.appendChild(button);
-    });
+        risposte.forEach((risposta) => {
+            const button = document.createElement("button");
+            button.className = "tastoRisposta";
+            button.innerHTML = risposta;
+            button.addEventListener("click", function () {
+                clearInterval(timerIntervallo); // Ferma il timer quando si risponde
+                gestisciRisposta(risposta, domandaCorrente.correct_answer); // Controlla la risposta data
+                indiceDomanda++; // Passa alla prossima domanda
+                mostraDomandaSuccessiva(); // Mostra la prossima domanda
+            });
+            risposteDiv.appendChild(button);
+        });
 
-    // Avvia il timer per la domanda
-
-    tempo = 11; // Ripristina il tempo a 60 secondi
-    clearInterval(timerIntervallo); // Ferma il timer 
-    timerIntervallo = setInterval(function () { // Avvia un nuovo timer
-      tempo--;
-      if (tempo >= 0) {
-        timer.textContent = tempo;
-      } else {         //IMPORTANTE
-        console.log(risposteSaltate);
-        console.log('Tempo scaduto'); //bisogna trovare come far in modo che nei risultati esca fuori che non è stata data alcuna risposta.
-        clearInterval(timerIntervallo);
-        // risposteErrate++; // Considera la risposta come sbagliata
-        // risposteSaltate++;
-        gestisciRisposta('', domandaCorrente.correct_answer); // Aggiunta per gestire la risposta saltata
-        indiceDomanda++; // Passa alla prossima domanda
-        mostraDomandaSuccessiva(); // Mostra la prossima domanda
-      }
-    }, 1000);
-  } else {
-    console.log("Quiz completato");
-
-    clearInterval(timerIntervallo); // Ferma il timer alla fine del quiz
-
-    let vediRisultatoBtn = document.getElementById('vediRisultato')
-    let btnRisultato = document.createElement('button')
-    btnRisultato.id = 'btnRisultato'
-    vediRisultatoBtn.appendChild(btnRisultato)
-    btnRisultato.textContent = 'Test terminato: clicca per vedere il risultato!'
-    conteggioDomande.style.display = 'none';
-    secondContainer.style.display = 'none';
-    timer.style.display = 'none';
-    btnRisultato.addEventListener('click', function () {
-      mostraRisultato()
-      btnRisultato.style.display = 'none'
-    })
-  }
+        // Avvia il timer per la domanda
+        tempo = 10; // Ripristina il tempo a 60 secondi
+        clearInterval(timerIntervallo); // Ferma il timer 
+        timerIntervallo = setInterval(function () { // Avvia un nuovo timer
+            tempo--;
+            if (tempo >= 0) {
+                timer.textContent = tempo;
+            } else {                           //IMPORTANTE
+                console.log('Tempo scaduto'); //bisogna trovare come far in modo che nei risultati esca fuori che non è stata data alcuna risposta.
+                clearInterval(timerIntervallo);
+                risposteSbagliate++; // Considera la risposta come sbagliata
+                indiceDomanda++; // Passa alla prossima domanda
+                tempoScaduto = true;
+                mostraDomandaSuccessiva(); // Mostra la prossima domanda
+            }
+        }, 1000);
+    } else {
+        console.log("Quiz completato");
+        clearInterval(timerIntervallo); // Ferma il timer alla fine del quiz
+        let vediRisultatoBtn = document.getElementById('vediRisultato')
+        let btnRisultato = document.createElement('button')
+        btnRisultato.id = 'btnRisultato'
+        vediRisultatoBtn.appendChild(btnRisultato)
+        btnRisultato.textContent = 'Test terminato: clicca per vedere il risultato!'
+        conteggioDomande.style.display = 'none';
+        secondContainer.style.display = 'none';
+        timer.style.display = 'none';
+        btnRisultato.addEventListener('click', function() {
+          mostraRisultato()
+          btnRisultato.style.display = 'none'
+        })
+    }
 }
 
-let risposteErrate = 0;
-
-
+let risposteUtente = [];
+console.log(risposteUtente);
 // Funzione per gestire la risposta data
 function gestisciRisposta(rispostaData, rispostaCorretta) {
   let domandaCorrente = questions[indiceDomanda];
-  let rispostaUtente = {
-    domanda: domandaCorrente.question,
-    rispostaData: rispostaData,
-    rispostaCorretta: rispostaCorretta,
+    let rispostaUtente = {
+        domanda: domandaCorrente.question,
+        rispostaData: rispostaData,
+        rispostaCorretta: rispostaCorretta,
+        rispostaSaltata: tempoScaduto,
+    };
+    risposteUtente.push(rispostaUtente); // Aggiunge la domanda e la risposta all'array
 
-  };
-  risposteUtente.push(rispostaUtente); // Aggiunge la domanda e la risposta all'array
-
-  if (rispostaData === rispostaCorretta) {
-    risposteGiuste++;
-    console.log("Risposta corretta");
+    if (!tempoScaduto) {
+      if (rispostaData === rispostaCorretta) {
+          risposteGiuste++;
+          console.log("Risposta corretta");
+      } else {
+          risposteSbagliate++;
+          console.log("Risposta errata");
+      }
   } else {
-    risposteSbagliate++;
-    risposteSaltate += rispostaData === '' ? 1 : 0; //operatore ternario funzione uguale a quella sotto
-    /*
-    if (rispostaData === '') {
-  risposteSaltate += 1;
-} else {
-  risposteSaltate += 0;
-}
-   */ console.log("Risposta errata o saltata");
-
+      console.log("Risposta saltata");
   }
+
 }
+  
 
 //funzione per randomizzare risposte O MEGLIO ALGORITMO DI FISHER-YATES //BISOGNA NON FARGLI MESCOLARE I BOOLEAN
 function shuffleArray(array) {
@@ -241,85 +234,60 @@ function shuffleArray(array) {
   }
 }
 
-//test carmen (grandissima) per test superato o fallito    
+
 function mostraRisultato() {
   let risultato = document.getElementById('risultato');
-  let listaRisultati = document.getElementById('tabellaRisultati');
   let risultatoFinale = document.getElementById('risultatoFinale');
-  risultatoFinale.style.display = 'block'
+  risultatoFinale.style.display = 'block';
+  risultato.style.display = 'block'
+  let tabellaHTML = `
+      <table class="risultati-table">
+          <thead>
+              <tr>
+                  <th>Domande</th>
+                  <th>Risposte Corrette <i class="fas fa-check"></i></th>
+                  <th>Risposte Date <i class="fas fa-edit"></i></th> <!-- Modifica qui -->
+              </tr>
+          </thead>
+          <tbody>
+  `;
 
-  // Pulisci la tabella prima di aggiungere nuove righe
-  tabellaRisultati.innerHTML = '';
+  // Itera su tutte le domande
+  questions.forEach((domanda) => {
+      let rispostaData = ''; // Inizializza la risposta data come vuota
+      let icona = ''; // Inizializza l'icona come vuota
 
+      // Cerca se l'utente ha fornito una risposta per questa domanda
+      risposteUtente.forEach((rispostaUtente) => {
+          if (rispostaUtente.domanda === domanda.question) {
+              rispostaData = rispostaUtente.rispostaData; // Aggiorna la risposta data se trovata
+          }
+      });
 
-
-  // Creazione dell'intestazione della tabella
-  let headerRow = tabellaRisultati.insertRow(0);//intestazione tabella
-  let headerCell0 = headerRow.insertCell(0);  //crea una nuova cella nella riga appena creata
-  headerCell0.textContent = 'N.';  //assegna il testo 'N.' a questa cella
-  let headerCell1 = headerRow.insertCell(1); //crea un'altra cella nella stessa riga
-  headerCell1.textContent = 'Domanda'; //rappresenta l'intestazione per la colonna delle domande nella tabella
-  let headerCell2 = headerRow.insertCell(2);
-  headerCell2.textContent = 'Risposta Data'; //creare una cella contenente il testo Risposta Data
-  let headerCell3 = headerRow.insertCell(3);
-  headerCell3.textContent = 'Risposta Corretta'; //creare una cella contenente il testo Risposta Corretta
-
-  risposteUtente.forEach((risposta, index) => {
-    let row = tabellaRisultati.insertRow(index + 1); //viene creata una nuova riga nella tabella dei risultati. L'indice viene incrementato di 1 perché la prima riga è già stata utilizzata per l'intestazione.
-    let cell0 = row.insertCell(0);// viene creata una cella nella riga corrente
-    cell0.textContent = index + 1;//rappresenta il numero dell'elemento 0, nel tuo contesto, il numero della risposta.
-    let cell1 = row.insertCell(1);
-    cell1.textContent = risposta.domanda;//viene assegnato il testo risposta.domanda, che rappresenta la domanda corrispondente alla risposta dell'utente
-    let cell2 = row.insertCell(2);
-    cell2.textContent = risposta.rispostaData;
-    let cell3 = row.insertCell(3);
-    cell3.textContent = risposta.rispostaCorretta;
-
-
-    //ho messo questo se vogliamo mettere classi CSS dopo 
-    if (risposta.rispostaData === risposta.rispostaCorretta) {
-      row.classList.add('risposta-corretta');//Se la condizione sopra è vera, viene aggiunta la classe CSS 'risposta-corretta' alla riga corrente
-    } else {
-      row.classList.add('risposta-errata');//viene aggiunta la classe CSS 'risposta-errata' alla riga corrente
-    }
+      // Aggiungi la riga della tabella per questa domanda
+      tabellaHTML += `
+          <tr>
+              <td>${domanda.question}</td>
+              <td>${domanda.correct_answer} ${icona}</td> <!-- Modifica qui -->
+              <td>${rispostaData || 'Non risposta'} ${icona}</td> <!-- Modifica qui -->
+          </tr>
+      `;
   });
 
-  risultato.textContent = "Risposte giuste: " + risposteGiuste + ', Risposte errate: ' + risposteErrate + ', Risposte saltate: ' + risposteSaltate;
-  if (risposteGiuste >= 6) {
-    risultato.textContent = "Test superato! " + risposteGiuste + ' risposte giuste' + risposteSbagliate + ' risposte errate' + 'Risposte Saltate: ' + risposteSaltate;
-    //modifico il 'risultato' con 'risposte giuste o sbagliate: Nouha
+  tabellaHTML += `
+          </tbody>
+      </table>
+  `;
+
+  risultatoFinale.innerHTML = tabellaHTML;
+
+  if (risposteGiuste > 6) {
+      risultato.textContent = "Test superato! " + risposteGiuste + ' risposte giuste';
   } else {
-    risultato.textContent = "Test fallito! " + risposteGiuste + ' risposte giuste ' + risposteSbagliate + ' risposte errate' + ' risposte saltate: ' + risposteSaltate;
-    console.log("Test fallito!" + risposteSbagliate + ' risposte errate');
+      risultato.textContent = "Test fallito! " + risposteSbagliate + ' risposte errate';
   }
 }
-/*risposteUtente.forEach((risposta) => {  // Nouha: faccio qualche modifica spero giuste
-  let listItem = document.createElement('li');
-  let icona = document.createElement('i');
-  icona.classList.add('fas');
-  if (risposta.rispostaData === risposta.rispostaCorretta) {
-    icona.classList.add('fa-check'); // aggiungo l'icona V nel caso fosse sbagliato
-  } else if (risposta.rispostaData === '' && risposta.rispostaCorretta !== '') {
-    icona.classList.add('fa-clock');
-  }
-  else {
-    icona.classList.add('fa-times'); // Aggiungo l'icona X nel caso fosse una domanda azzeccata :D
-  }
-  listItem.textContent = 'Domanda: ' + risposta.domanda + ', Risposta data: ' + risposta.rispostaData + ', Risposta corretta: ' + risposta.rispostaCorretta;
-  listaRisultati.appendChild(listItem);
-  listItem.appendChild(icona); // Aggiungi l'icona alla risposta
-});
 
-if (risposteGiuste >= 6) {
-  risultato.textContent = "Test superato! " + risposteGiuste + ' risposte giuste' + risposteSbagliate + ' risposte errate' + 'Risposte Saltate: ' + risposteSaltate;
-  //modifico il 'risultato' con 'risposte giuste o sbagliate: Nouha
-} else {
-  risultato.textContent = "Test fallito! " + risposteGiuste + ' risposte giuste ' + risposteSbagliate + ' risposte errate' + ' risposte saltate: ' + risposteSaltate;
-  console.log("Test fallito!" + risposteSbagliate + ' risposte errate');
-}
 
-console.log(risposteGiuste + risposteSbagliate + risposteSaltate)
-
-}*/
 
 
